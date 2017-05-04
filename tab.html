@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>tab切换</title>
+  <style>
+    div,ul,li {
+      margin: 0;
+      padding: 0;
+    }
+    ul,li {
+      list-style: none;
+      box-sizing: border-box;
+    }
+    .wrap {
+      width: 600px;
+      margin: 50px auto;
+      border: 1px solid #ccc;
+    }
+    .tab-head {    
+      width: 580px;
+      margin: 10px 10px 0 10px;
+      border: 1px solid #ccc;
+    }
+    .clearfix::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .tab-head>li {
+      width: 33.33%;
+      float: left;    
+      border-left: 1px solid #ccc;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .tab-head li:first-child {
+      border-left: none;   
+    }
+    .tab-head .active {
+      background-color: #eee;
+    }
+    .tab-text {
+      width: 580px;
+      margin: 0 10px 10px 10px;
+      border: 1px solid #ccc;
+      border-top: none;
+      padding: 20px;
+    }
+    .tab-text>li {
+      display: none;
+    }
+    .tab-text .active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class='wrap'>
+    <ul class='tab-head clearfix'>
+      <li class='active'>tab1</li>
+      <li>tab2</li>
+      <li>tab3</li>
+    </ul> 
+    <ul class='tab-text'>
+      <li class='active'>内容1</li>
+      <li>内容2</li>
+      <li>内容3</li>
+    </ul>
+  </div>
+  
+  <div class='wrap'>
+    <ul class='tab-head clearfix'>
+      <li class='active'>tab1</li>
+      <li>tab2</li>
+      <li>tab3</li>
+    </ul> 
+    <ul class='tab-text'>
+      <li class='active'>内容1</li>
+      <li>内容2</li>
+      <li>内容3</li>
+    </ul>
+  </div>
+  <script src="jquery-3.2.0.min.js"></script>
+  <script>
+    function Tab($wrap){
+      this.wrap=$wrap;
+      this.init();
+      this.bind();
+      console.log(this);
+    }
+    Tab.prototype.init=function(){
+      this.ulTabHead=this.wrap.find('.tab-head');
+      this.ulTabText=this.wrap.find('.tab-text');
+    }
+    Tab.prototype.bind=function(){
+      var _this=this;
+      this.ulTabHead.on('click','li',function(){
+        _this.ulTabHead.children().removeClass('active')
+                                 .eq($(this).index())
+                                 .addClass('active');
+        _this.ulTabText.children().removeClass('active')
+                                 .eq($(this).index())
+                                 .addClass('active');
+      })
+    }
+    new Tab($('.wrap').eq(0));
+    new Tab($('.wrap').eq(1));
+  </script>
+</body>
+</html>
+
+
+ 
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
