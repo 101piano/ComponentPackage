@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>carousel轮播</title>
+  <style>
+    div,ul,li,a,img {
+      margin: 0;
+      padding: 0;
+    }
+    ul,li {
+      list-style: none;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .carousel {
+      width: 300px;
+      height: 225px;
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .carousel-img::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .carousel-img li {
+      width: 300px;
+      float: left;
+    }
+    img {
+      width: 300px;
+      height: 225px;
+    }
+    .btn {
+      width: 30px;
+      height: 30px;
+      background-color: #ccc;
+      border-radius: 50%;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      font-size: 20px;
+      position: absolute;
+      top: 50%;
+      margin-top: -15px;
+    }
+    .pre-btn {
+      left: 20px;    
+    }
+    .next-btn {
+      right: 20px;
+    }
+    .promo-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 20px;
+      text-align: center;
+    }
+    .promo-nav li {
+      width: 20px;
+      height: 5px;
+      background-color: #fff;
+      display: inline-block;
+      margin: 5px;
+    }
+    .promo-nav .active {
+      background-color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class='carousel'>
+    <ul class='carousel-img'>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/26.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/25.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/24.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/23.jpg'></a></li>
+    </ul>
+    <div class='btn pre-btn'><a href='javascript:void(0)'>&lt;</a></div>
+    <div class='btn next-btn'><a href='javascript:void(0)'>&gt;</a></div>
+    <ul class='promo-nav'>
+      <li class='active'></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  
+   <div class='carousel'>
+    <ul class='carousel-img'>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/26.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/25.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/24.jpg'></a></li>
+      <li><a href='javascript:void(0)'><img src='http://cdn.jirengu.com/book.jirengu.com/img/23.jpg'></a></li>
+    </ul>
+    <div class='btn pre-btn'><a href='javascript:void(0)'>&lt;</a></div>
+    <div class='btn next-btn'><a href='javascript:void(0)'>&gt;</a></div>
+    <ul class='promo-nav'>
+      <li class='active'></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <script src="jquery-3.2.0.min.js"></script>
+  <script>
+    function Carousel($ct){
+    console.log(this);
+      this.ct=$ct;  
+      this.init();
+      this.bind();
+    }
+    Carousel.prototype.init=function(){
+      var carouselImg=this.carouselImg=this.ct.find('.carousel-img'),
+          preBtn=this.preBtn=this.ct.find('.pre-btn'),
+          nextBtn=this.nextBtn=this.ct.find('.next-btn'),
+          promoNavs=this.promoNavs=this.ct.find('.promo-nav');
+     
+      this.currentIndex=this.currentIndex=0;  
+      this.isAnimate=false;
+      //未复制前的个数
+      this.imgNum=carouselImg.children().length;
+      this.liWidth=this.liWidth=carouselImg.find('li').width();
+      //复制
+      var firstImg=this.firstImg=carouselImg.find('li').first(),
+          lastImg=this.lastImg=carouselImg.find('li').last();
+          
+      //插入
+      carouselImg.prepend(lastImg.clone());
+      carouselImg.append(firstImg.clone());
+      //将carouselImg的宽度变大
+      carouselImg.css('width',carouselImg.children().length*this.liWidth);
+      carouselImg.css('left','-300px');
+    }
+    
+    Carousel.prototype.bind=function(){
+      var _this=this;
+      this.preBtn.on('click',function(){
+        _this.playPre(1);
+      });
+      this.nextBtn.on('click',function(){
+        _this.playNext(1);
+      });
+
+      this.promoNavs.on('click','li',function(){
+        var lenth=$(this).index()-_this.currentIndex;
+        if(length>=0){
+          _this.playNext(lenth);
+        }else {
+          _this.playPre(-lenth);
+        }
+      })   
+    }
+    Carousel.prototype.playPre=function(num){
+      var _this=this;
+      if(_this.isAnimate) return;
+      _this.isAnimate=true;
+      this.carouselImg.animate({
+          left: '+='+num*_this.liWidth
+        },function(){
+          _this.currentIndex-=num;
+          if(_this.currentIndex<0){
+            _this.carouselImg.css('left',-(_this.liWidth*_this.imgNum));
+            _this.currentIndex=_this.imgNum-1;
+          }
+          _this.setpromoNav(_this.currentIndex);
+          _this.isAnimate=false;
+      });
+    }
+    Carousel.prototype.playNext=function(num){
+      var _this=this;
+       if(_this.isAnimate) return;
+      this.carouselImg.animate({
+          left: '-='+num*_this.liWidth
+        },function(){
+          _this.currentIndex+=num;
+          if(_this.currentIndex==_this.imgNum){
+            _this.carouselImg.css('left','-300px');
+            _this.currentIndex=0;
+          }
+          _this.setpromoNav(_this.currentIndex);
+          _this.isAnimate=false;
+      });
+    }
+    Carousel.prototype.setpromoNav=function(index){
+      $(this.promoNavs).children().removeClass('active')
+                            .eq(index)
+                            .addClass('active');
+    }
+    
+    new Carousel($('.carousel').eq(0));
+    new Carousel($('.carousel').eq(1));
+    
+  </script>
+</body>
+</html>
+
+
+ 
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
