@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>exposure曝光组件</title>
+  <style>
+    div,ul,li,p {
+      margin: 0;
+      padding: 0;
+    }
+    ul,li {
+      list-style: none;
+    }
+    .wrap {
+      width: 800px;
+      margin: 10px auto;
+    }
+    .ul-wrap::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .ul-wrap>li {
+      float: left;
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+    .ul-wrap>li>img {
+      width: 380px;
+      height: 380px;
+    }
+    p {
+      float: left;
+    }
+  </style>
+</head>
+<body>
+  <div class='wrap'>
+    <ul class='ul-wrap'>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/1.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/2.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/3.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/4.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/5.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/6.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/7.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/8.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/9.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/10.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/11.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/12.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/13.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/14.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/15.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+      <li><img data-src="http://cdn.jirengu.com/book.jirengu.com/img/16.jpg" src="http://kejian.jirengu.com/data/fe/%E8%AF%BE%E4%BB%B6/32-%E6%87%92%E5%8A%A0%E8%BD%BD/code/blank.jpg"></li>
+    </ul>
+    <p class='hello'>hello</p>
+    <p class='world'>world</p>
+  </div>
+  <script src="jquery-3.2.0.min.js"></script>
+  <script>
+      function Exposure($target,callback){
+        this.target=$target,
+        this.callback=callback;
+        this.bind();
+        
+      }
+      Exposure.prototype.bind=function(){
+        var _this=this;
+        $(window).on('scroll',function(){
+          if(_this.isShow()){
+            _this.callback(_this.target);
+          }        
+        });
+      }
+      Exposure.prototype.isShow=function(){
+        var windowHeight=$(window).height();//窗口高度
+        var scrollTop=$(window).scrollTop();//滚轮高度
+        var offsetTop=this.target.offset().top;//元素距文档高度
+        var nodeHeight=this.target.height();//元素高度
+        if(scrollTop<(offsetTop+nodeHeight) && offsetTop<(windowHeight+scrollTop)){
+          return true;
+        }else {
+          return false;
+        }
+      }
+      new Exposure($('.hello'),function($node){
+        $node.text($node.text()+$node.text());
+      });
+      $('.ul-wrap img').each(function(index,element){
+        new Exposure($(element),function($img){
+          showImg($img);
+        });
+      });
+      
+      function showImg($img){
+        var imgUrl=$img.attr('data-src');
+        $img.attr('src',imgUrl);
+      }
+      
+  </script>
+</body>
+</html>
+
+
+ 
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
