@@ -8,8 +8,7 @@
       width: 100%;
       height: 100%;
       opacity: 0.4;
-      background-color: #000;
-      
+      background-color: #000;     
       position: absolute;
       top: 0;
       left: 0;
@@ -29,7 +28,7 @@
     }
     .dialog .dialog-header {
       padding: 10px 19px;
-      color: #fffl
+      color: #fff;
       background-color: #676666;     
     }
     .dialog .dialog-header::after {
@@ -80,41 +79,41 @@
   <button class='btn open3'>打开3</button>
   <button class='btn open4'>打开4</button>
   <button class='btn open5'>打开5</button>
-  <button class='btn open6'>打开6</button>
   
   <script src="jquery-3.2.0.min.js"></script>
   <script>
 
     var Dialog=(function(){
+      //Modal构造函数
       function Modal(){
-        this.createDialog();
-        this.bindEvent();
+        this.createDialog();//创建HTML元素
+        this.bindEvent();//给取消和确定按钮绑定事件
       }
       Modal.prototype={
+      //defaultOpts默认参数
         defaultOpts: {
           title: '',
           message: '',
           isShowCloseBtn: true,
           isShowConfirmBtn: false,
-          onClose: function(){},
-          onConfirm: function(){}
+          onClose: function(){},//当点击取消按钮或X按钮时发生的事件
+          onConfirm: function(){}//点击确认按钮时发生的事件
         },
         
         open: function(opts){
           this.setOpts(opts);
-          console.log(this.opts);
           this.setDialog();
           this.showDialog();
+          this.dragDialog();
         },
         
         close: function(){
           this.hideDialog();
         },
-        
+        //setOptes事件：判断用户输入的opts是字符串还是对象，字符串：只输入内容；对象：除了内容，也许还有标题或事件
         setOpts: function(opts){
           if(typeof opts==='string'){
             this.opts=$.extend({},this.defaultOpts,{message: opts});
-            console.log(this.opts);
           }else if(typeof opts ==='object'){
             this.opts=$.extend({},this.defaultOpts,opts);
           }
@@ -180,7 +179,49 @@
         },
         hideDialog: function(){
           this.$dialog.hide();
-        }     
+        },
+
+        dragDialog: function(){
+          var disX,
+              disY,
+              _this=this;
+          
+          _this.$dialog.on('mousedown',function(e){
+            disX=e.clientX-_this.$dialog.offset().left;
+            disY=e.clientY-_this.$dialog.offset().top;
+            e.preventDefault();
+        
+            $(document).on('mousemove',setPos);
+            $(document).on('mouseup',function(e){
+               $(document).unbind('mousemove',setPos);   
+            });
+            function setPos(e){   
+              var l=e.clientX-disX,
+                  t=e.clientY-disY,
+                  w=_this.$dialog.offset().left,
+                  h=_this.$dialog.offset().top,
+                  docuWidth=$(document).width(),
+                  docuHeight=$(document).height();
+    
+              if(l < w/2){
+                l = w/2;
+              } else if (l > (docuWidth-w/2)) {
+                    l = docuWidth - w/2;
+              }
+              if(t < h/2){
+                t = h/2;
+              }else if (t > docuHeight - h/2) {
+                t = docuHeight - h/2;
+              } 
+          
+              _this.$dialog.css({
+                'left': l,
+                'top': t
+              });    
+              e.preventDefault();
+            }
+          });        
+        }
       };
       return new Modal();   
     })();
@@ -242,15 +283,7 @@
         isShowConfirmBtn: false
       });
     });
-
-
-      $('.close').on('click', function(){
-        Dialog.close();
-      });
-
-    
-    
-    
+   
   </script>
 </body>
 </html>
