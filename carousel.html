@@ -144,6 +144,7 @@
     
     Carousel.prototype.bind=function(){
       var _this=this;
+      setInterval(function(){_this.playNext(1)},1000);
       this.preBtn.on('click',function(){
         _this.playPre(1);
       });
